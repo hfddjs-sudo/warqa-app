@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ورقة — مساحة المدرس لصناعة الأسئلة</title>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1b4d3e;
+            --primary-light: #e8f3ef;
+            --bg: #f7f8f6;
+            --card-bg: #ffffff;
+            --text-main: #2d3748;
+            --border-color: #e2e8f0;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Tajawal', sans-serif; }
+        body { background-color: var(--bg); color: var(--text-main); padding-bottom: 70px; }
+
+        header {
+            background: white;
+            padding: 12px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+            position: sticky; top: 0; z-index: 100;
+        }
+
+        .brand { display: flex; align-items: center; gap: 10px; }
+        .brand-icon { background: var(--primary); color: white; width: 35px; height: 35px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: bold; }
+        .brand-title { font-size: 18px; font-weight: 700; color: var(--primary); }
+        .brand-sub { font-size: 11px; color: #718096; }
+
+        .btn-print-top {
+            background: var(--primary); color: white; border: none; padding: 8px 16px; border-radius: 8px; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 6px;
+        }
+
+        .main-container { max-width: 800px; margin: 20px auto; padding: 0 15px; }
+
+        .hero-text { text-align: center; margin-bottom: 20px; }
+        .hero-text h1 { font-size: 24px; color: #1a202c; margin-bottom: 5px; }
+        .hero-text p { font-size: 13px; color: #718096; }
+
+        .steps-nav { display: flex; justify-content: space-between; background: #edf2f7; padding: 4px; border-radius: 10px; margin-bottom: 20px; }
+        .step-btn { flex: 1; text-align: center; padding: 8px; font-size: 13px; border-radius: 8px; cursor: pointer; color: #4a5568; }
+        .step-btn.active { background: var(--primary-light); color: var(--primary); font-weight: bold; }
+        .step-num { background: var(--primary); color: white; border-radius: 50%; padding: 2px 7px; font-size: 11px; margin-left: 5px; }
+
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+
+        .card { background: white; border-radius: 12px; padding: 20px; border: 1px solid var(--border-color); margin-bottom: 15px; }
+        .card-title { font-size: 16px; font-weight: 700; margin-bottom: 5px; color: #1a202c; }
+        .card-desc { font-size: 12px; color: #a0aec0; margin-bottom: 15px; }
+
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .form-group { margin-bottom: 12px; }
+        label { display: block; font-size: 12px; color: #718096; margin-bottom: 4px; }
+        input, select, textarea { width: 100%; padding: 10px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 13px; background: #fafafa; }
+
+        .a4-preview { background: white; width: 100%; min-height: 500px; border: 1px solid #ccc; padding: 20px; font-family: 'Amiri', serif; }
+        .a4-header { display: flex; justify-content: space-between; border-bottom: 2px solid #000; padding-bottom: 10px; margin-bottom: 10px; text-align: center; font-size: 12px; line-height: 1.4; }
+
+        .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: white; border-top: 1px solid var(--border-color); display: flex; justify-content: space-around; padding: 10px 0; z-index: 1000; }
+        .nav-item { border: none; background: none; font-size: 13px; color: #718096; cursor: pointer; padding: 6px 16px; border-radius: 8px; }
+        .nav-item.active { background: var(--primary-light); color: var(--primary); font-weight: bold; }
+
+        @media print {
+            body * { visibility: hidden; }
+            #a4-paper, #a4-paper * { visibility: visible; }
+            #a4-paper { position: absolute; left: 0; top: 0; width: 100%; }
+            header, .bottom-nav, .steps-nav, .hero-text { display: none !important; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="brand">
+            <div class="brand-icon">📄</div>
+            <div>
+                <div class="brand-title">ورقة</div>
+                <div class="brand-sub">مساحة المدرس لصناعة الأسئلة</div>
+            </div>
+        </div>
+        <button class="btn-print-top" onclick="window.print()">🖨️ طباعة الأسئلة</button>
+    </header>
+
+    <div class="main-container">
+        <div class="hero-text">
+            <h1>أسئلة مرتّبة. بكل بساطة.</h1>
+            <p>اكتب، نسّق، واطبع ورقة امتحان جاهزة لطلابك.</p>
+        </div>
+
+        <div class="steps-nav">
+            <div class="step-btn active" onclick="switchTab('tab1', this)"><span class="step-num">1</span> بيانات الامتحان</div>
+            <div class="step-btn" onclick="switchTab('tab2', this)"><span class="step-num">2</span> الأسئلة والدرجات</div>
+            <div class="step-btn" onclick="switchTab('tab3', this)"><span class="step-num">3</span> تنسيق الورقة</div>
+        </div>
+
+        <!-- التبويب 1: بيانات الامتحان (كل الحقول فارغة مع أثداء أمثلة توضيحية) -->
+        <div id="tab1" class="tab-content active">
+            <div class="card">
+                <div class="card-title">ترووسة ورقة الامتحان</div>
+                <div class="card-desc">الجهة والمدرسة في اليمين، وعنوان الامتحان في الوسط.</div>
+                <div class="form-group"><label>الدولة</label><input type="text" id="in-country" placeholder="مثال: جمهورية العراق/" oninput="updatePaper()"></div>
+                <div class="form-group"><label>الوزارة</label><input type="text" id="in-ministry" placeholder="مثال: وزارة التربية" oninput="updatePaper()"></div>
+                <div class="form-group"><label>مديرية التربية</label><input type="text" id="in-dir" placeholder="مثال: مديرية تربية الكرخ الثالثة" oninput="updatePaper()"></div>
+                <div class="form-group"><label>اسم المدرسة</label><input type="text" id="in-school" placeholder="أدخل اسم المدرسة..." oninput="updatePaper()"></div>
+                <div class="form-group"><label>البسملة أو عبارة علوية</label><input type="text" id="in-basmala" placeholder="مثال: بسم الله الرحمن الرحيم" oninput="updatePaper()"></div>
+                <div class="form-group"><label>عنوان الامتحان</label><input type="text" id="in-title" placeholder="مثال: أسئلة الشهر الأول" oninput="updatePaper()"></div>
+                <div class="form-group"><label>العام الدراسي</label><input type="text" id="in-year" placeholder="مثال: 2026 - 2027" oninput="updatePaper()"></div>
+            </div>
+
+            <div class="card">
+                <div class="card-title">تفاصيل الامتحان</div>
+                <div class="form-grid">
+                    <div class="form-group"><label>الصف / المرحلة</label><input type="text" id="in-grade" placeholder="أدخل الصف..." oninput="updatePaper()"></div>
+                    <div class="form-group"><label>المادة</label><input type="text" id="in-subject" placeholder="أدخل اسم المادة..." oninput="updatePaper()"></div>
+                    <div class="form-group"><label>تاريخ الامتحان</label><input type="text" id="in-date" placeholder="أدخل التاريخ..." oninput="updatePaper()"></div>
+                    <div class="form-group"><label>مدة الامتحان</label><input type="text" id="in-time" placeholder="أدخل الوقت..." oninput="updatePaper()"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- التبويب 2: الأسئلة -->
+        <div id="tab2" class="tab-content">
+            <div class="card">
+                <div class="card-title">الأسئلة والدرجات</div>
+                <div class="form-group"><label>نص السؤال</label><textarea id="q-text" rows="3" placeholder="أكتب نص السؤال هنا..."></textarea></div>
+                <div class="form-group"><label>الدرجة</label><input type="number" id="q-score" placeholder="مثال: 10"></div>
+                <button style="width: 100%; padding: 10px; background: var(--primary); color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer;" onclick="addQuestion()">+ إضافة سؤال جديد</button>
+            </div>
+        </div>
+
+        <!-- التبويب 3: المعاينة -->
+        <div id="tab3" class="tab-content">
+            <div class="a4-preview" id="a4-paper">
+                <div class="a4-header">
+                    <div style="text-align: right;">
+                        <div id="out-country"></div>
+                        <div id="out-ministry"></div>
+                        <div id="out-dir"></div>
+                        <div id="out-school"></div>
+                    </div>
+                    <div>
+                        <div id="out-basmala"></div>
+                        <h3 id="out-title"></h3>
+                        <div id="out-year"></div>
+                    </div>
+                    <div style="text-align: left;">
+                        <div>الصف: <span id="out-grade"></span></div>
+                        <div>المادة: <span id="out-subject"></span></div>
+                        <div>التاريخ: <span id="out-date"></span></div>
+                        <div>الزمن: <span id="out-time"></span></div>
+                    </div>
+                </div>
+                <div id="questions-area" style="margin-top: 15px; font-size: 14px;"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="bottom-nav">
+        <button class="nav-item active" onclick="switchTab('tab1', this)">✏️ التحرير</button>
+        <button class="nav-item" onclick="switchTab('tab3', this)">👁️ المعاينة</button>
+        <button class="nav-item" onclick="window.print()">🖨️ طباعة</button>
+    </div>
+
+    <script>
+        function switchTab(tabId, el) {
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.step-btn, .nav-item').forEach(b => b.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            if(el) el.classList.add('active');
+        }
+
+        function updatePaper() {
+            document.getElementById('out-country').innerText = document.getElementById('in-country').value;
+            document.getElementById('out-ministry').innerText = document.getElementById('in-ministry').value;
+            document.getElementById('out-dir').innerText = document.getElementById('in-dir').value;
+            document.getElementById('out-school').innerText = document.getElementById('in-school').value;
+            document.getElementById('out-basmala').innerText = document.getElementById('in-basmala').value;
+            document.getElementById('out-title').innerText = document.getElementById('in-title').value;
+            document.getElementById('out-year').innerText = document.getElementById('in-year').value;
+            document.getElementById('out-grade').innerText = document.getElementById('in-grade').value;
+            document.getElementById('out-subject').innerText = document.getElementById('in-subject').value;
+            document.getElementById('out-date').innerText = document.getElementById('in-date').value;
+            document.getElementById('out-time').innerText = document.getElementById('in-time').value;
+        }
+
+        let qCount = 1;
+        function addQuestion() {
+            const txt = document.getElementById('q-text').value;
+            const score = document.getElementById('q-score').value || '0';
+            if(!txt) return alert('يرجى ادخال السؤال');
+
+            const area = document.getElementById('questions-area');
+            const q = document.createElement('div');
+            q.style.display = 'flex';
+            q.style.justifyContent = 'space-between';
+            q.style.marginBottom = '10px';
+            q.innerHTML = `<span>س${qCount}: ${txt}</span> <span>(${score} درجة)</span>`;
+            area.appendChild(q);
+            document.getElementById('q-text').value = '';
+            document.getElementById('q-score').value = '';
+            qCount++;
+            alert('تمت إضافة السؤال! انتقل لتبويب المعاينة لرؤية الورقة.');
+        }
+    </script>
+</body>
+</html>
